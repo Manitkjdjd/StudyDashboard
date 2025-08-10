@@ -87,7 +87,7 @@ const Timetable: React.FC = () => {
     return subjectData?.color || '#6B7280';
   };
 
-  const isLunchTime = (time: string) => time === '12:00-1:00';
+  const isLunchTime = (time: string) => time === '2:00-2:30';
 
   return (
     <div className="space-y-6">

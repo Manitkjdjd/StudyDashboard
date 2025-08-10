@@ -48,19 +48,21 @@ export interface Subject {
 }
 
 export const SUBJECTS: Subject[] = [
-  { name: 'Math', color: '#3B82F6' },
-  { name: 'English', color: '#10B981' },
-  { name: 'Science', color: '#8B5CF6' },
+  { name: 'Math', color: '#ff8800ff' },
+  { name: 'English', color: '#3510b9ff' },
+  // { name: 'English', color: '#10B981' },
+  { name: 'Physics', color: '#e6b71eff' },
+  { name: 'Chemistry', color: '#1916cfff' },
+  { name: 'Biology', color: '#ccc016ff' },
   { name: 'History', color: '#F59E0B' },
-  { name: 'Geography', color: '#EF4444' },
-  { name: 'Computer', color: '#06B6D4' },
-  { name: 'Art', color: '#EC4899' },
-  { name: 'PE', color: '#84CC16' },
+  { name: 'Geography', color: '#7dbe14ff' },
+  { name: 'Computer', color: '#7706d4ff' },
+  
 ];
 
 export const TIME_SLOTS = [
-  '8:00-9:00', '9:00-10:00', '10:00-11:00', '11:00-12:00',
-  '12:00-1:00', '1:00-2:00', '2:00-3:00'
+  '2:00-2:30', '2:30-4:00', '4:00-5:00', '5:00-6:30',
+  '6:30-8:00', '8:00-9:30', '9:30-11:00'
 ];
 
-export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday','Saterday','Sunday'];
