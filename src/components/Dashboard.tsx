@@ -1,5 +1,6 @@
 import React from 'react';
 import { useStudy } from '../contexts/StudyContext';
+import { useAuth } from '../contexts/AuthContext';
 import { getNextUpcoming, getDaysLeft, isOverdue } from '../utils/dateUtils';
 import { calculateWeightedAverage } from '../utils/gradeUtils';
 import CountdownWidget from './widgets/CountdownWidget';
