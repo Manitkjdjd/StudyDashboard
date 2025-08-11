@@ -351,15 +351,21 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const updateTimetable = async (slots: TimetableSlot[]) => {
     if (!user) return;
 
+    try {
     // Delete existing timetable
     await supabase
       .from('timetable')
+      if (deleteError) {
+        console.error('Error deleting timetable:', deleteError);
+        return;
+      }
+
       .delete()
       .eq('user_id', user.id);
 
     // Insert new timetable slots
     if (slots.length > 0) {
-      const { error } = await supabase
+      const { error: deleteError } = await supabase
         .from('timetable')
         .insert(
           slots.map(slot => ({
@@ -368,12 +374,17 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             time: slot.time,
             subject: slot.subject,
             notes: slot.notes,
-          }))
-        );
+        if (error) {
+          console.error('Error inserting timetable:', error);
+          return;
 
-      if (!error) {
-        setTimetable(slots);
       }
+      
+      // Update local state regardless of whether we inserted new slots or not
+      setTimetable(slots);
+    } catch (error) {
+      console.error('Error updating timetable:', error);
+    }
     } else {
       setTimetable([]);
     }

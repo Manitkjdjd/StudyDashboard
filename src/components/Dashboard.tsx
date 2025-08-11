@@ -8,6 +8,19 @@ import { BookOpen, Calendar, Trophy, Clock, CheckCircle } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
   const { homework, calendarEvents, grades } = useStudy();
+  const { user } = useAuth();
+
+  // Show loading state if user exists but data hasn't loaded yet
+  if (user && (!homework || !calendarEvents || !grades)) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your study data...</p>
+        </div>
+      </div>
+    );
+  }
 
   // Calculate statistics
   const overdueHomework = homework.filter(hw => isOverdue(hw.dueDate));

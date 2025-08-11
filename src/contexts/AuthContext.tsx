@@ -20,19 +20,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   const createOrUpdateProfile = async (user: User) => {
-    const { error } = await supabase
-      .from('profiles')
-      .upsert({
-        id: user.id,
-        email: user.email!,
-        full_name: user.user_metadata?.full_name || user.user_metadata?.name || null,
-        updated_at: new Date().toISOString(),
-      }, {
-        onConflict: 'id'
-      });
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          email: user.email!,
+          full_name: user.user_metadata?.full_name || user.user_metadata?.name || null,
+          updated_at: new Date().toISOString(),
+        }, {
+          onConflict: 'id'
+        });
 
-    if (error) {
-      console.error('Error creating/updating profile:', error);
+      if (error) {
+        console.error('Error creating/updating profile:', error);
+      }
+    } catch (error) {
+      console.error('Error in createOrUpdateProfile:', error);
     }
   };
   useEffect(() => {
