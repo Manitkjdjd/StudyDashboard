@@ -467,6 +467,9 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       // Update local state
       setTimetable(newTimetable);
+      
+      // Force a reload to ensure data consistency
+      await loadTimetable();
     } catch (error) {
       console.error('Error updating timetable:', error);
     }

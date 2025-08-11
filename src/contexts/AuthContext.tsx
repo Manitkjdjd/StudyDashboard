@@ -84,10 +84,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signInWithGoogle = async () => {
+    // Get the current URL without any hash fragments
+    const currentUrl = window.location.origin + window.location.pathname;
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: currentUrl,
       },
     });
     return { error };

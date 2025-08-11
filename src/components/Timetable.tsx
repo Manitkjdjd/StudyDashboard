@@ -29,7 +29,7 @@ const Timetable: React.FC = () => {
   };
 
   const handleSave = () => {
-    const newTimetable = Object.entries(editData)
+    const newTimetableData = Object.entries(editData)
       .filter(([_, value]) => value.subject.trim() !== '')
       .map(([key, value]) => {
         const [day, time] = key.split('-');
@@ -41,24 +41,11 @@ const Timetable: React.FC = () => {
         };
       });
     
-    updateTimetable(newTimetable);
+    updateTimetable(newTimetableData);
     setIsEditing(false);
   };
 
   const handleCancel = () => {
-    // Reset edit data to current timetable
-    const data: { [key: string]: { subject: string; notes: string } } = {};
-    DAYS.forEach(day => {
-      TIME_SLOTS.forEach(time => {
-        const key = `${day}-${time}`;
-        const slot = timetable.find(t => t.day === day && t.time === time);
-        data[key] = {
-          subject: slot?.subject || '',
-          notes: slot?.notes || '',
-        };
-      });
-    });
-    setEditData(data);
     setIsEditing(false);
   };
 
@@ -74,11 +61,13 @@ const Timetable: React.FC = () => {
   };
 
   const getSlotData = (day: string, time: string) => {
+    const key = `${day}-${time}`;
     if (isEditing) {
-      const key = `${day}-${time}`;
       return editData[key] || { subject: '', notes: '' };
     }
-    return timetable.find(t => t.day === day && t.time === time) || { subject: '', notes: '' };
+    // Always use the current timetable data when not editing
+    const slot = timetable.find(t => t.day === day && t.time === time);
+    return slot ? { subject: slot.subject, notes: slot.notes || '' } : { subject: '', notes: '' };
   };
 
   const getSubjectColor = (subject: string) => {
