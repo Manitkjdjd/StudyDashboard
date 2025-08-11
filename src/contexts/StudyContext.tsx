@@ -177,7 +177,6 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         priority: updates.priority,
         notes: updates.notes,
         submission_link: updates.submissionLink,
-        updated_at: new Date().toISOString(),
       })
       .eq('id', id)
       .eq('user_id', user.id);
@@ -250,7 +249,6 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         location: updates.location,
         reminder_set: updates.reminderSet,
         preparation_checklist: updates.preparationChecklist,
-        updated_at: new Date().toISOString(),
       })
       .eq('id', id)
       .eq('user_id', user.id);
@@ -326,7 +324,6 @@ export const StudyProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         date_graded: updates.dateGraded,
         feedback: updates.feedback,
         weight: updates.weight,
-        updated_at: new Date().toISOString(),
       })
       .eq('id', id)
       .eq('user_id', user.id);

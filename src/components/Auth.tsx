@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { BookOpen, Mail, Lock, User, AlertCircle } from 'lucide-react';
+import { BookOpen, Mail, Lock, User, AlertCircle, Chrome } from 'lucide-react';
 
 const Auth: React.FC = () => {
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, signInWithGoogle } = useAuth();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,6 +28,22 @@ const Auth: React.FC = () => {
       setError('An unexpected error occurred');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setGoogleLoading(true);
+    setError(null);
+
+    try {
+      const { error } = await signInWithGoogle();
+      if (error) {
+        setError(error.message);
+      }
+    } catch (err) {
+      setError('Failed to sign in with Google');
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -52,6 +69,31 @@ const Auth: React.FC = () => {
 
         {/* Auth Form */}
         <div className="bg-white rounded-xl shadow-lg p-8">
+          {/* Google Sign In Button */}
+          <button
+            onClick={handleGoogleSignIn}
+            disabled={googleLoading || loading}
+            className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mb-6"
+          >
+            {googleLoading ? (
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-700"></div>
+            ) : (
+              <>
+                <Chrome className="h-5 w-5" />
+                Continue with Google
+              </>
+            )}
+          </button>
+
+          <div className="relative mb-6">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-300" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-white text-gray-500">Or continue with email</span>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3">
@@ -74,6 +116,7 @@ const Auth: React.FC = () => {
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                   placeholder="Enter your email"
                   required
+                  disabled={loading || googleLoading}
                 />
               </div>
             </div>
@@ -93,13 +136,14 @@ const Auth: React.FC = () => {
                   placeholder="Enter your password"
                   required
                   minLength={6}
+                  disabled={loading || googleLoading}
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || googleLoading}
               className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
@@ -116,6 +160,7 @@ const Auth: React.FC = () => {
           <div className="mt-6 text-center">
             <button
               onClick={() => setIsSignUp(!isSignUp)}
+              disabled={loading || googleLoading}
               className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
               {isSignUp 
